@@ -1,13 +1,29 @@
-name: Print Message
+name: DevOps Demo Workflow
+
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  say-hello:
+  greeting-job:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Print a Message
-        run: echo "Hello! A Push detected on Main Branch"
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Print Welcome Message
+        run: echo "Hello! A push or pull request detected on the main branch."
+
+      - name: Show Current Date
+        run: date
+
+      - name: Print DevOps Message
+        run: echo "CI/CD pipeline executed successfully."
+
+      - name: Print Success Message
+        run: echo "Workflow completed successfully!"
