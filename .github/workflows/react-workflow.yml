@@ -1,4 +1,4 @@
-name: React projet Artifact
+name: React project Artifact
 
 on:
   push:
@@ -11,23 +11,25 @@ jobs:
 
     defaults:
       run:
-        working-directory: react-app1
+        working-directory: react-project
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
-      - name: Set up Node Js
-        uses: actions/setup-node@v6
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
-      - name: Install Node Dependencies
+      - name: Install Dependencies
         run: npm install
 
       - name: Build React App
         run: npm run build
 
-      - name: Upload an Artifact
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: react-build
-          path: dist
+          path: react-project/build
