@@ -1,12 +1,13 @@
-name: React project Artifact
+name: Node.js CI
 
 on:
   push:
-    branches:
-      - main
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     defaults:
@@ -14,22 +15,32 @@ jobs:
         working-directory: react-project
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: '22'
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Build React App
+      - name: Build App
         run: npm run build
+
+      - name: Run Tests
+        run: npm test
+
+      - name: Package build output as ZIP
+        run: |
+          mkdir output
+          cp -r dist output/
+          cp package.json output/
+          zip -r build.zip output
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: react-build
-          path: react-project/dist
+          name: build-zip
+          path: build.zip
